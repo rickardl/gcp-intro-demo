@@ -1,4 +1,4 @@
-# AWS Short Intro Demonstration For Tieto Specialists  <!-- omit in toc -->
+# GCP Short Intro Demonstration For Tieto Specialists  <!-- omit in toc -->
 
 
 # Table of Contents  <!-- omit in toc -->
