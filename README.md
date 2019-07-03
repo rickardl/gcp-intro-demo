@@ -52,8 +52,9 @@ Go to terraform/env/dev directory.
 You have to manually set the backend bucket since variables are not allowed in the terraform section.
 Check the bucket name first: ```echo $TF_VAR_TERRA_BACKEND_BUCKET_NAME```
 Then populate the value in [dev.tf](terraform/envs/dev/dev.tf):
+```text
 bucket           =  "<GIVE-BUCKET-NAME-HERE>"
-
+```
 Then you are ready to run the usual terraform init/get/plan/deploy commands.
 
 
