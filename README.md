@@ -5,6 +5,8 @@
 - [WORK IN PROGRESS!!!](#WORK-IN-PROGRESS)
 - [Introduction](#Introduction)
 - [GCP Terraform Parent Project](#GCP-Terraform-Parent-Project)
+- [Source environment variables.](#Source-environment-variables)
+- [Create admin entities.](#Create-admin-entities)
 - [Deploy the Terraform Infra Code](#Deploy-the-Terraform-Infra-Code)
 - [GCP Solution](#GCP-Solution)
 
@@ -29,41 +31,34 @@ NOTE: There are equivalent AWS demonstration - [aws-intro-demo](https://github.c
 
 First let's create a Terraform parent project which hosts the Terraform state files and also the GCP Service account so that these entities do not belong to the actual GCP demo project. So, the idea is to divide Terraform state & deployment infra (state file & service account to run infra deployments) separate from the actual GCP infra entities that are part of the demo infra. Follow instructions given in document [Getting started with Terraform on Google Cloud Platform](https://cloud.google.com/community/tutorials/getting-started-on-gcp-with-terraform). Create a project and create the entities as described in that document.
 
-We will create this parent project and entities manually since they are not part of the actual demo infra. We use document [Managing GCP projects with Terraform](https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform) - note: I don't follow the document in every detail (e.g. not creating billing accounts etc.).
+We will create this parent project and entities manually since they are not part of the actual demo infra. 
 
-1. Create a parent project as documented in [Creating and Managing Projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-2. Create service account as documented in [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts).
+NOTE: We cannot use document [Managing GCP projects with Terraform](https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform) since it would require that we can give the service account the project createor role for the organization - not possible in my corporation GCP organization. Therefore we create manually also the actual project that will be used to deploy the infra entities.
 
-NOTE: See [GCP gcloud configuration](https://cloud.google.com/sdk/gcloud/reference/config/configurations/) documentation for more information how to create gcloud configurations (e.g. for command gcloud init).
+You could also automate these steps but let's create these steps manually since they are related how we host Terraform related infra and not the actual demo infra.
 
-You can also create the service account using the following commands. You may want to create a separate gcloud configuration for this parent project.
+First create environment variables file in ~/.gcp/<YOUR-ADMIN-FILE>.sh. 
+
+**TODO**: See gcp_env_template.sh. => DO THIS IN THE END WHEN READY AND TESTED!
 
 ```bash
- # First check current GCP project.
-gcloud config get-value project
-# You may want to create a new gcloud configuration for this project and set the terraform parent project as the default project and set the default region and zone...
-gcloud init
-# Create service account.
-export TF_CREDS=~/.config/gcloud/<YOUR-NAME>-terraform-parent.json
-export TF_ADMIN=<YOUR-NAME>-terraform-parent
-gcloud iam service-accounts create terraform --display-name "terraform-service-account"
-gcloud iam service-accounts keys create ${TF_CREDS} --iam-account terraform@${TF_ADMIN}.iam.gserviceaccount.com
-# Add roles.
-gcloud projects add-iam-policy-binding ${TF_ADMIN} --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com --role roles/viewer
-gcloud projects add-iam-policy-binding ${TF_ADMIN} --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com --role roles/storage.admin
-gcloud organizations add-iam-policy-binding tieto.com --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com --role roles/resourcemanager.projectCreator
-# Make Cloud storage bucket.
-gsutil mb -p ${TF_ADMIN} gs://${TF_ADMIN}
-gsutil versioning set on gs://${TF_ADMIN}
+
+Then create the admin entities.
+
+```bash
+
+# Source environment variables.
+source ~/.gcp/<YOUR-ADMIN-FILE>.sh
+
+# Create admin entities.
+./create-admin-proj.sh
 
 ```
 
 
 # Deploy the Terraform Infra Code
 
-Run usual terraform init / get / plan / deploy.
-
-
+Go to terraform/env/dev directory. Run usual terraform init / get / plan / deploy.
 
 
 

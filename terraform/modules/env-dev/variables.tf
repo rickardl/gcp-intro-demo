@@ -1,6 +1,9 @@
 variable "prefix" {}
 variable "env" {}
 variable "region" {}
-variable "project_name" {}
-variable "project_id" {}
-
+variable "infra_project_name" {}
+variable "infra_project_id" {}
+variable "folder_id" {}
+variable "billing_account" {}
+variable "vpc_cidr_block" {}
+variable "app_subnet_cidr_block" {}
