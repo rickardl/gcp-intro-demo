@@ -5,8 +5,6 @@
 - [WORK IN PROGRESS!!!](#WORK-IN-PROGRESS)
 - [Introduction](#Introduction)
 - [GCP Terraform Parent Project](#GCP-Terraform-Parent-Project)
-- [Source environment variables.](#Source-environment-variables)
-- [Create admin entities.](#Create-admin-entities)
 - [Deploy the Terraform Infra Code](#Deploy-the-Terraform-Infra-Code)
 - [GCP Solution](#GCP-Solution)
 
@@ -29,37 +27,34 @@ NOTE: There are equivalent AWS demonstration - [aws-intro-demo](https://github.c
 
 # GCP Terraform Parent Project
 
-First let's create a Terraform parent project which hosts the Terraform state files and also the GCP Service account so that these entities do not belong to the actual GCP demo project. So, the idea is to divide Terraform state & deployment infra (state file & service account to run infra deployments) separate from the actual GCP infra entities that are part of the demo infra. Follow instructions given in document [Getting started with Terraform on Google Cloud Platform](https://cloud.google.com/community/tutorials/getting-started-on-gcp-with-terraform). Create a project and create the entities as described in that document.
+First let's create a Terraform parent project which hosts the Terraform state file in a Cloud storage so that it is not part of the actual GCP demo infra project. So, the idea is to divide Terraform state & deployment infra (state file) separate from the actual GCP infra entities that are part of the demo infra. Follow instructions given in document [Getting started with Terraform on Google Cloud Platform](https://cloud.google.com/community/tutorials/getting-started-on-gcp-with-terraform). We will create this parent project using a script provided by this demonstration.
 
-We will create this parent project and entities manually since they are not part of the actual demo infra. 
+NOTE: We cannot use document [Managing GCP projects with Terraform](https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform) since it would require that we can give the service account the project creator role for the organization - not possible in my corporation GCP organization. 
 
-NOTE: We cannot use document [Managing GCP projects with Terraform](https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform) since it would require that we can give the service account the project createor role for the organization - not possible in my corporation GCP organization. Therefore we create manually also the actual project that will be used to deploy the infra entities.
+First create environment variables file in ~/.gcp/<YOUR-ADMIN-FILE>.sh. Use file [gcp_env_template.sh](gcp_env_template.sh) as a template.
 
-You could also automate these steps but let's create these steps manually since they are related how we host Terraform related infra and not the actual demo infra.
 
-First create environment variables file in ~/.gcp/<YOUR-ADMIN-FILE>.sh. 
-
-**TODO**: See gcp_env_template.sh. => DO THIS IN THE END WHEN READY AND TESTED!
+Then create admin entities.
 
 ```bash
-
-Then create the admin entities.
-
-```bash
-
 # Source environment variables.
 source ~/.gcp/<YOUR-ADMIN-FILE>.sh
 
 # Create admin entities.
 ./create-admin-proj.sh
-
 ```
 
 
 # Deploy the Terraform Infra Code
 
-Go to terraform/env/dev directory. Run usual terraform init / get / plan / deploy.
+Go to terraform/env/dev directory. 
 
+You have to manually set the backend bucket since variables are not allowed in the terraform section.
+Check the bucket name first: ```echo $TF_VAR_TERRA_BACKEND_BUCKET_NAME```
+Then populate the value in [dev.tf](terraform/envs/dev/dev.tf):
+bucket           =  "<GIVE-BUCKET-NAME-HERE>"
+
+Then you are ready to run the usual terraform init/get/plan/deploy commands.
 
 
 # GCP Solution
