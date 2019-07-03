@@ -5,6 +5,7 @@
 - [WORK IN PROGRESS!!!](#WORK-IN-PROGRESS)
 - [Introduction](#Introduction)
 - [GCP Terraform Parent Project](#GCP-Terraform-Parent-Project)
+- [Deploy the Terraform Infra Code](#Deploy-the-Terraform-Infra-Code)
 - [GCP Solution](#GCP-Solution)
 
 
@@ -40,18 +41,27 @@ You can also create the service account using the following commands. You may wa
 ```bash
  # First check current GCP project.
 gcloud config get-value project
-# You may want to create a new gcloud configuration for this project:
+# You may want to create a new gcloud configuration for this project and set the terraform parent project as the default project and set the default region and zone...
 gcloud init
 # Create service account.
 export TF_CREDS=~/.config/gcloud/<YOUR-NAME>-terraform-parent.json
 export TF_ADMIN=<YOUR-NAME>-terraform-parent
 gcloud iam service-accounts create terraform --display-name "terraform-service-account"
 gcloud iam service-accounts keys create ${TF_CREDS} --iam-account terraform@${TF_ADMIN}.iam.gserviceaccount.com
+# Add roles.
+gcloud projects add-iam-policy-binding ${TF_ADMIN} --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com --role roles/viewer
+gcloud projects add-iam-policy-binding ${TF_ADMIN} --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com --role roles/storage.admin
+gcloud organizations add-iam-policy-binding tieto.com --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com --role roles/resourcemanager.projectCreator
+# Make Cloud storage bucket.
+gsutil mb -p ${TF_ADMIN} gs://${TF_ADMIN}
+gsutil versioning set on gs://${TF_ADMIN}
+
 ```
 
 
+# Deploy the Terraform Infra Code
 
-
+Run usual terraform init / get / plan / deploy.
 
 
 
