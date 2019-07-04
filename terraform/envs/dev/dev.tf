@@ -37,8 +37,6 @@ locals {
   # Use consistent prefix, e.g. <cloud-provider>-<demo-target/purpose>-demo, e.g. aws-ecs-demo
   my_prefix             = "gcp-intro-demo"
 
-  # TODO
-  vpc_cidr_block        = "10.50.0.0/16"
   app_subnet_cidr_block = "10.50.1.0/24"
 }
 
@@ -52,16 +50,15 @@ provider "google" {
 
 # Here we inject our values to the environment definition module which creates all actual resources.
 module "env-def" {
-  source             = "../../modules/env-dev"
-  prefix             = local.my_prefix
-  env                = local.my_env
-  region             = var.REGION
-  infra_project_id   = var.INFRA_PROJ_ID
-  infra_project_name = var.INFRA_PROJ_NAME
-  folder_id          = var.FOLDER_ID
-  billing_account    = var.BILLING_ACCOUNT_ID
-
-  vpc_cidr_block        = local.vpc_cidr_block
+  source                = "../../modules/env-dev"
+  prefix                = local.my_prefix
+  env                   = local.my_env
+  region                = var.REGION
+  zone                  = var.ZONE
+  infra_project_id      = var.INFRA_PROJ_ID
+  infra_project_name    = var.INFRA_PROJ_NAME
+  folder_id             = var.FOLDER_ID
+  billing_account       = var.BILLING_ACCOUNT_ID
   app_subnet_cidr_block = local.app_subnet_cidr_block
 }
 

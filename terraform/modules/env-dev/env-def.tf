@@ -6,6 +6,7 @@ module "project" {
   prefix                    = var.prefix
   env                       = var.env
   region                    = var.region
+  zone                      = var.zone
   project_id                = var.infra_project_id
   project_name              = var.infra_project_name
   folder_id                 = var.folder_id

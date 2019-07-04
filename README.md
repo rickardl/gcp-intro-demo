@@ -25,6 +25,9 @@ I tried to keep this demonstration as simple as possible. The main purpose is no
 
 NOTE: There are equivalent AWS demonstration - [aws-intro-demo](https://github.com/tieto-pc/aws-intro-demo), and Azure demonstration - [azure-intro-demo](https://github.com/tieto-pc/azure-intro-demo) - compare the terraform code between these GCP, AWS and Azure infra implementations and you realize how similar they are.
 
+NOTE. There are a lot of [Terraform examples provided by Google](https://github.com/GoogleCloudPlatform/terraform-google-examples) - you should use these examples as a starting point for your own GCP Terraform IaC, I did too.
+
+
 # GCP Terraform Parent Project
 
 First let's create a Terraform parent project which hosts the Terraform state file in a Cloud storage so that it is not part of the actual GCP demo infra project. So, the idea is to divide Terraform state & deployment infra (state file) separate from the actual GCP infra entities that are part of the demo infra. Follow instructions given in document [Getting started with Terraform on Google Cloud Platform](https://cloud.google.com/community/tutorials/getting-started-on-gcp-with-terraform). We will create this parent project using a script provided by this demonstration.
