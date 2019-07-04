@@ -41,11 +41,11 @@ locals {
 }
 
 provider "google" {
+  # NOTE: Using admin project id here since we create infra project in IaC.
   project = var.ADMIN_PROJ_ID
   region  = var.REGION
   zone    = var.ZONE
 }
-
 
 
 # Here we inject our values to the environment definition module which creates all actual resources.

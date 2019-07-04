@@ -12,3 +12,14 @@ module "project" {
   folder_id                 = var.folder_id
   billing_account           = var.billing_account
 }
+
+
+module "vpc" {
+  source                    = "../vpc"
+  prefix                    = var.prefix
+  env                       = var.env
+  region                    = var.region
+  zone                      = var.zone
+  infra_project_id          = var.infra_project_id
+  app_subnet_cidr_block     = var.app_subnet_cidr_block
+}

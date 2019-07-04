@@ -47,6 +47,8 @@ source ~/.gcp/<YOUR-ADMIN-FILE>.sh
 ./create-admin-proj.sh
 ```
 
+NOTE: There is a chicken and egg problem here. In [dev.tf](terraform/envs/dev/def.tf) we are using the admin project in the google provider (since this definition will create infra project as part of the IaC). Therefore we need to inject the infra_project_id to every entity created as part of the infra IaC. I need to investigate this a bit later.
+
 
 # Deploy the Terraform Infra Code
 
