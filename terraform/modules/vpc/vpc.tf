@@ -27,6 +27,8 @@ resource "google_compute_firewall" "app-firewall" {
   priority                 = 500
   description              = "Allow SSH to app-subnetwork VM instances"
 
+  source_ranges            = ["0.0.0.0/0"]
+
   allow {
     protocol = "icmp"
   }
@@ -36,5 +38,5 @@ resource "google_compute_firewall" "app-firewall" {
     ports    = ["22"]
   }
 
-  source_tags = ["app"]
+
 }

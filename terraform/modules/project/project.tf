@@ -18,7 +18,7 @@ resource "google_project" "infra_project" {
     region      = var.region
     zone        = var.zone
     terraform   = true
- }
+  }
 }
 
 # NOTE: compute has dependency to oslogin.

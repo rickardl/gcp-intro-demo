@@ -7,6 +7,7 @@
 - [GCP Terraform Parent Project](#GCP-Terraform-Parent-Project)
 - [Deploy the Terraform Infra Code](#Deploy-the-Terraform-Infra-Code)
 - [GCP Solution](#GCP-Solution)
+- [Investigating Connectivity Issue](#Investigating-Connectivity-Issue)
 
 
 # WORK IN PROGRESS!!!
@@ -63,6 +64,16 @@ bucket           =  "<GIVE-BUCKET-NAME-HERE>"
 Then you are ready to run the usual terraform init/get/plan/deploy commands.
 
 
+
 # GCP Solution
 
 The diagram below depicts the main services / components of the solution. TODO...
+
+
+# Investigating Connectivity Issue
+
+When created the first version of VPC, subnetwork, firewall and VM I couldn't connect to the VM neither using Console SSH or ssh from my local workstation. The VM was not reachable using ping. I created another standard VM using GCP Console into the same subnetwork - same thing. GCP provided nice document for solving connectivity issues: [Troubleshooting SSH](https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-ssh). That document didn't help though. A seasoned cloud developer has a best practice in situation like this. Create another version of the entities using either Portal or some tutorial instructions that should work. Verify that the tutorial version works. Then compare all entities (your not-working entity and equivalent tutorial working entity) - in some entity you should see some discrepancy which should give you either the culprit itself or at least some clues how to investivate the issue further. So, I created another custom VPC, subnetwork and firewall using instructions in [Using VPC](https://cloud.google.com/vpc/docs/using-vpc) and was able to pinpoint the issue and fix it. 
+
+While investigating the issue I noticed that when choosing the instance in GCP Console and clicking Edit button and checking the ssh key it complains: ```Invalid key. Required format: <protocol> <key-blob> <username@example.com> or <protocol> <key-blob> google-ssh {"userName":"<username@example.com>", expireOn":"<date>"}``` ... but logging to instance using the key succeeds: ```ssh -i terraform/modules/vm/.ssh/vm_id_rsa user@<EXTERNAL-IP>```. I didn't bother to investigate reason for that error message since I could ssh to the instance using the key.
+
+

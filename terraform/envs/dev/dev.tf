@@ -36,8 +36,11 @@ locals {
   my_env                = "dev"
   # Use consistent prefix, e.g. <cloud-provider>-<demo-target/purpose>-demo, e.g. aws-ecs-demo
   my_prefix             = "gcp-intro-demo"
-
+  # The application subnet cidr.
   app_subnet_cidr_block = "10.50.1.0/24"
+  # Linux or Mac: "1", Windows: "0"
+  # This is a hack related to the way how ssh key is stored differently in Linux vs Windows machines.
+  my_workstation_is_linux   = "1"
 }
 
 provider "google" {
@@ -50,16 +53,17 @@ provider "google" {
 
 # Here we inject our values to the environment definition module which creates all actual resources.
 module "env-def" {
-  source                = "../../modules/env-dev"
-  prefix                = local.my_prefix
-  env                   = local.my_env
-  region                = var.REGION
-  zone                  = var.ZONE
-  infra_project_id      = var.INFRA_PROJ_ID
-  infra_project_name    = var.INFRA_PROJ_NAME
-  folder_id             = var.FOLDER_ID
-  billing_account       = var.BILLING_ACCOUNT_ID
-  app_subnet_cidr_block = local.app_subnet_cidr_block
+  source                  = "../../modules/env-dev"
+  prefix                  = local.my_prefix
+  env                     = local.my_env
+  region                  = var.REGION
+  zone                    = var.ZONE
+  infra_project_id        = var.INFRA_PROJ_ID
+  infra_project_name      = var.INFRA_PROJ_NAME
+  folder_id               = var.FOLDER_ID
+  billing_account         = var.BILLING_ACCOUNT_ID
+  app_subnet_cidr_block   = local.app_subnet_cidr_block
+  my_workstation_is_linux = local.my_workstation_is_linux
 }
 
 

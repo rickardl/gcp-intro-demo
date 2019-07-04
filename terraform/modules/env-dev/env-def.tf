@@ -23,3 +23,15 @@ module "vpc" {
   infra_project_id          = var.infra_project_id
   app_subnet_cidr_block     = var.app_subnet_cidr_block
 }
+
+
+module "vm" {
+  source                    = "../vm"
+  prefix                    = var.prefix
+  env                       = var.env
+  region                    = var.region
+  zone                      = var.zone
+  infra_project_id          = var.infra_project_id
+  my_workstation_is_linux   = var.my_workstation_is_linux
+  app_subnetwork_link       = module.vpc.app_subnetwork_link
+}

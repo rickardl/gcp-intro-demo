@@ -7,3 +7,4 @@ variable "infra_project_id" {}
 variable "folder_id" {}
 variable "billing_account" {}
 variable "app_subnet_cidr_block" {}
+variable "my_workstation_is_linux" {}
