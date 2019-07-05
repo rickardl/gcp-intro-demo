@@ -44,8 +44,7 @@ locals {
 }
 
 provider "google" {
-  # NOTE: Using admin project id here since we create infra project in IaC.
-  project = var.ADMIN_PROJ_ID
+  project = var.INFRA_PROJ_ID
   region  = var.REGION
   zone    = var.ZONE
 }
