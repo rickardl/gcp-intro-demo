@@ -16,6 +16,7 @@
   - [VM Module](#VM-Module)
 - [Terraform Backend](#Terraform-Backend)
 - [Demonstration Manuscript](#Demonstration-Manuscript)
+- [Suggestions How to Continue this Demonstration](#Suggestions-How-to-Continue-this-Demonstration)
 - [Investigating Connectivity Issue](#Investigating-Connectivity-Issue)
 - [Some Considerations](#Some-Considerations)
 
@@ -23,11 +24,11 @@
 
 # Introduction
 
-This demonstration can be used in training new cloud specialists who don't need to have any prior knowledge of GCP (Google Cloud Platform) but who want to start working on GCP projects and building their GCP competence.
+This demonstration can be used in training new cloud specialists who don't need to have any prior knowledge of GCP (Google Cloud Platform) but who want to start working on GCP projects and building their GCP competence (well, a bit of GCP knowledge is required - GCP main concepts, how to use the GCP Portal and CLI).
 
-This demonstration is basically the same as [gcp-intro-dp-demo](https://github.com/tieto-pc/gcp-intro-dp-demo) (TODO: WILL BE IMPLEMENTED LATER) with one difference: gcp-intro-demo uses [Terraform](https://www.terraform.io/) as IaC tool, and gcp-intro-dp-demo uses [GCP Deployment Manager](https://cloud.google.com/deployment-manager/docs/). The idea is to introduce another way to create infrastructure code in GCP and let developers to compare Terraform and GCP Deployment Manager and makel their own decision which tool to use in their future projects.
+This demonstration is basically the same as [gcp-intro-dp-demo](https://github.com/tieto-pc/gcp-intro-dp-demo) (TODO: WILL BE IMPLEMENTED LATER) with one difference: gcp-intro-demo uses [Terraform](https://www.terraform.io/) as IaC tool, and gcp-intro-dp-demo uses [GCP Deployment Manager](https://cloud.google.com/deployment-manager/docs/). The idea is to introduce another way to create infrastructure code in GCP and let developers to compare Terraform and GCP Deployment Manager and make their own decision which tool to use in their future projects.
 
-This project demonstrates basic aspects how to create cloud infrastructure as code. The actual infra is very simple: just one virtual machine instance. We create a virtual private cloud [vpc](https://cloud.google.com/vpc/) and an application subnet into which we create the [VM](https://cloud.google.com/compute/docs/instances/). There is also one [firewall](https://cloud.google.com/vpc/docs/firewalls) in the VPC that allows inbound traffic only using ssh port 22. The IaC also creates a ssh key pair - the public key gets stored in your workstation, the private key will be installed to the VM.
+This project demonstrates basic aspects how to create cloud infrastructure as code. The actual infra is very simple: just one virtual machine instance. We create a virtual private cloud [vpc](https://cloud.google.com/vpc/) and an application subnet into which we create a [VM](https://cloud.google.com/compute/docs/instances/). There is also one [firewall](https://cloud.google.com/vpc/docs/firewalls) in the VPC that allows inbound traffic only using ssh port 22. The IaC also creates a ssh key pair - the public key gets stored in your workstation, the private key will be installed to the VM.
 
 I tried to keep this demonstration as simple as possible. The main purpose is not to provide an example how to create a cloud system (e.g. not recommending VMs over containers) but to provide a very simple example of infrastructure code and tooling related creating the infra. I have provided some suggestions how to continue this demonstration at the end of this document - you can also send me email to my corporate email and suggest what kind of GCP or GCP POCs you need in your team - I can help you to create the POCs for your customer meetings.
 
@@ -52,7 +53,7 @@ First let's create a Terraform parent project which hosts the Terraform state fi
 
 NOTE: We cannot use document [Managing GCP projects with Terraform](https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform) since it would require that we can give the service account the project creator role for the organization - not possible in my corporation GCP organization. 
 
-NOTE: This is just one possible solution. This solution allows the infra project to be part of the IaC - another solution would be to create the infra project separately (just the GCP project) and then use IaC to deploy the infra entities (VPC, VM...) into that project - this solution would have been a bit simpler considering the environment variables.
+NOTE: This is just one possible solution. This solution allows the infra project to be part of the IaC - another solution would be to create the infra project separately (just the GCP project) and then use IaC to deploy the infra entities (VPC, VM...) into that project - this solution would have been a bit simpler considering the environment variables. In that solution you also could use service account since you wouldn't need to create the project in IaC.
 
 First create environment variables file in ~/.gcp/<YOUR-ADMIN-FILE>.sh. Use file [gcp_env_template.sh](gcp_env_template.sh) as a template.
 
@@ -84,7 +85,7 @@ Then you are ready to run the usual terraform init/get/plan/deploy commands.
 
 # Terraform Code
 
-I am using [Terraform](https://www.terraform.io/) as an [infrastructure as code](https://en.wikipedia.org/wiki/Infrastructure_as_code) (IaC) tool. I'm using the new Terraform v. 0.12 version which has some major changes compared to previous versions - e.g. regarding interpolation (therefore there are some differences regarding this gcp-intro demo and previous aws-intro-demo and azure-intro-demo). Terraform is very much used both in AWS, Azure and GCP cloud platforms to create IaC solutions and one of its strenghts compared to cloud native tools (AWS / [CloudFormation](https://aws.amazon.com/cloudformation) and Azure / [ARM template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-authoring-templates)) and GCP / [Deployment Manager](https://cloud.google.com/deployment-manager/) is that you can use Terraform with many cloud providers, you have to learn just one infra language and syntax, and Terraform language (hcl) is pretty powerful and clear. When deciding the actual infra code tool you should consult the customer if there is some tooling already decided. Otherwise you should evaluate Deployment Manager and Terraform and then decide which one is more appropriate for the needs of your GCP cloud project.
+I am using [Terraform](https://www.terraform.io/) as an [infrastructure as code](https://en.wikipedia.org/wiki/Infrastructure_as_code) (IaC) tool. I'm using the new Terraform v. 0.12 version which has some major changes compared to previous versions - e.g. regarding interpolation (therefore there are some differences regarding this gcp-intro demo and previous aws-intro-demo and azure-intro-demo). Terraform is very much used in AWS, Azure and GCP cloud platforms to create IaC solutions and one of its strenghts compared to cloud native tools (AWS / [CloudFormation](https://aws.amazon.com/cloudformation), Azure / [ARM template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-authoring-templates) and GCP / [Deployment Manager](https://cloud.google.com/deployment-manager/) ) is that you can use Terraform with many cloud providers, you have to learn just one infra language and syntax, and Terraform language (hcl) is pretty powerful and clear. When deciding the actual infra code tool you should consult the customer if there is some tooling already decided. Otherwise you should evaluate Deployment Manager and Terraform and then decide which one is more appropriate for the needs of your GCP cloud project.
 
 If you are new to infrastructure as code (IaC) and terraform specifically let's explain the high level structure of the terraform code first. Project's terraform code is hosted in [terraform](terraform) folder.
 
@@ -134,7 +135,7 @@ So, this environment defition defines three modules: project, vpc and vm. Let's 
 
 ## Project Module
 
-The [project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) definition creates the infra project that will host all resources in this demonstration. IaC also links this new project to the folder we are using (if you don't have a project modify the code) and to a billing account (you must have a billing account in order to create resources). We also set auto-create-network to false since we don't want that GCP creates a default VPC for us which it would normally do.
+The [project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) definition creates the infra project that will host all resources in this demonstration. IaC also links this new project to the folder we are using (if you don't have a folder modify the code) and to a billing account (you must have a billing account in order to create resources). We also set auto-create-network to false since we don't want that GCP creates a default VPC for us which it would normally do.
 
 We also turn on certain GCP APIs we need in this project (compute related).
 
@@ -146,7 +147,8 @@ The [vpc](https://cloud.google.com/vpc/) definition creates the VPC (virtual pri
 
 Note that in GCP VPC is a global entity and you don't assign an address space ([cidr](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)) to it as in AWS and Azure. You assign the address space to subnet. You also need to provide the infra project id which is used to host subnet and firewall rule (and later compute instance).
 
-Finally there is a [firewall rule](https://cloud.google.com/vpc/docs/firewalls) defintion which opens port 22 for ssh connections. NOTE: We do not restrict any source addresses - something we don't want to do in real world systems. But don't worry - there is just one VM and we protect the VM with ssh keys (see VM chapter later).
+Finally there is a [firewall rule](https://cloud.google.com/vpc/docs/firewalls) defintion which opens port 22 for ssh connections. NOTE: We do not restrict any source addresses - in real world system you should restrict the source ip addresses, of course. But don't worry - there is just one VM and we protect the VM with ssh keys (see VM chapter later).
+
 
 ## VM Module
 
@@ -176,7 +178,7 @@ NOTE: If you need to delete the backend completely, then delete these:
 
 # Demonstration Manuscript
 
-NOTE: These instructions are for Linux (most probably should work for Mac as well). If some Tieto employee is using Windows it would appreciate to get a merge request to provide instructions for a Windows workstation as well.
+NOTE: These instructions are for Linux (most probably should work for Mac as well). If some Tieto employee is using Windows I would appreciate to get a merge request to provide instructions for a Windows workstation as well.
 
 Let's finally give detailed demonstration manuscript how you are able to deploy the infra of this demonstration to your GCP account. You need a GCP account for this demonstration. You can order a private GCP account or you can contact your line manager if you are allowed to use Tieto's GCP account (contact the administrator in Tieto Yammer Google Cloud Platform group).  **NOTE**: Watch for costs! Always finally destroy your infrastructure once you are ready (never leave any resources to run indefinitely in your GCP account to generate costs).
 
@@ -199,13 +201,21 @@ Let's finally give detailed demonstration manuscript how you are able to deploy 
    1. Home => Select the project you created.
    2. Click the "VPC Network". Browse subnets etc.
    3. Click the "Compute Engine". Browse different information regarding the VM.
-9.  Test to get ssh connection to the EC2 instance:
-   4. ```gcloud compute instances list``` => list VMs (should be only one) => check the external ip.
-   5. Open another terminal in project root folder.
-   6. ssh -i terraform/modules/vm/.ssh/vm_id_rsa user@IP-NUMBER-HERE
+9.  Test to get ssh connection to the VM instance:
+    1.  ```gcloud compute instances list``` => list VMs (should be only one) => check the external ip.
+    2.  ssh -i terraform/modules/vm/.ssh/vm_id_rsa user@IP-NUMBER-HERE
 10. Finally destroy the infra using ```terraform destroy``` command. Check manually also using Portal that terraform destroyed all resources. **NOTE**: It is utterly important that you always destroy your infrastructure when you don't need it anymore - otherwise the infra will generate costs to you or to your unit.
 
-The official demo is over. Next you could do the equivalent [gcp-intro-deploymentmanager-demo](https://github.com/tieto-pc/gcp-intro-deploymentmanager-demo) that uses GCP Deployment Manager. Then compare the Terraform and Deployment Manager code and also the workflows. Reflect the two tools - which pros and cons they have when compared to each other? Which one would you like to start using? And why?
+The official demo is over. Next you could do the equivalent [gcp-intro-dp-demo](https://github.com/tieto-pc/gcp-intro-dp-demo) that uses GCP Deployment Manager. Then compare the Terraform and Deployment Manager code and also the workflows. Evaluate the two tools - which pros and cons they have when compared to each other? Which one would you like to start using? And why?
+
+
+# Suggestions How to Continue this Demonstration
+
+We could add e.g. an instance group and a load balancer to this demonstration but let's keep this demonstration as short as possible so that it can be used as a GCP introduction demonstration. If there are some improvement suggestions that our Tieto developers would like to see in this demonstration let's create other small demonstrations for those purposes, e.g.:
+- Create a custom Linux image that has the Java app baked in.
+- An instance group (with CRM app baked in) + a load balancer.
+- Logs to StackDriver.
+- Use container instead of VM.
 
 
 # Investigating Connectivity Issue
@@ -217,8 +227,8 @@ While investigating the issue I noticed that when choosing the instance in GCP C
 
 # Some Considerations
 
-There is some hassle if you want the GCP infra project be part of your IaC solution. E.g. you have to manually set the infra project id to all resources since the project is not yet ready when you call the Terraform google provider. Also if you want to run the IaC in one shot this is a bit problematic since when Terraform/GCP creates the project and you have added the billing account as a parameter you will get an error: ```Error: Error creating Subnetwork: googleapi: Error 403: Project kari-dev-gcp-intro-demo-id-8 cannot accept requests to insert while in an inactive billing state.  Billing state may take several minutes to update., inactiveBillingState```.
+There is some hassle if you want the GCP infra project be part of your IaC solution. E.g. you have to manually set the infra project id to all resources since the project is not yet ready when you call the Terraform google provider. Also if you want to run the IaC in one shot this is a bit problematic since when Terraform/GCP creates the project and you have added the billing account as a parameter you will get an error: ```Error: Error creating Subnetwork: googleapi: Error 403: Project kari-dev-gcp-intro-demo-id-8 cannot accept requests to insert while in an inactive billing state.  Billing state may take several minutes to update., inactiveBillingState```. I managed to fix that issue later by outputting the infra project id from the project module (even though it is in the environment variable in this demonstration) and injecting that dependency to vpc and vm modules - end result: the project entity (with the billing account link) needs to be created first before Terraform continues to create the resources that need a billing account.
 
-Also the [gcp_env_template.sh](gcp_env_template.sh) / ```GCP_INFRA_VERSION``` is a bit clumsy. In this sense the Azure Resource group behaves better from the IaC point of view. Another solution could be just create the infra project manually (using either GCP Console or GCP CLI) and add the infra project id as parameter to the Terraform IaC code. Now that I have seen how to create the project using Terraform I'm turning to be that idea a bit tempting.
+Also the [gcp_env_template.sh](gcp_env_template.sh) / ```GCP_INFRA_VERSION``` is a bit clumsy. In this sense the Azure Resource group behaves better from the IaC point of view. Another solution could be just to create the infra project manually (using either GCP Console or GCP CLI) and add the infra project id as parameter to the Terraform IaC code. Now that I have seen how to create the project using Terraform I'm turning to the idea not having the project as part of the IaC solution.
 
 
