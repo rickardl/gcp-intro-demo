@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 
+if [ $# -ne 0 ]
+then
+  echo "Usage: ./create-admin-proj.sh"
+  exit 1
+fi
+
+
 # Create projects.
 echo "*** Creating projects... ***"
 gcloud projects create $TF_VAR_ADMIN_PROJ_ID --folder=$TF_VAR_FOLDER_ID --name=$TF_VAR_ADMIN_PROJ_NAME
