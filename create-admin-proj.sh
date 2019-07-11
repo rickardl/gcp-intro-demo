@@ -8,8 +8,8 @@ then
 fi
 
 
-# Create projects.
-echo "*** Creating projects... ***"
+# Create project.
+echo "*** Creating admin project... ***"
 gcloud projects create $TF_VAR_ADMIN_PROJ_ID --folder=$TF_VAR_FOLDER_ID --name=$TF_VAR_ADMIN_PROJ_NAME
 
 # Create gcloud configuration for terraform parent project.
