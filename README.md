@@ -25,7 +25,7 @@
 
 This demonstration can be used in training new cloud specialists who don't need to have any prior knowledge of GCP (Google Cloud Platform) but who want to start working on GCP projects and building their GCP competence (well, a bit of GCP knowledge is required - GCP main concepts, how to use the GCP Portal and CLI).
 
-This demonstration is basically the same as [gcp-intro-dp-demo](https://github.com/tieto-pc/gcp-intro-dp-demo) (TODO: WILL BE IMPLEMENTED LATER) with one difference: gcp-intro-demo uses [Terraform](https://www.terraform.io/) as IaC tool, and gcp-intro-dp-demo uses [GCP Deployment Manager](https://cloud.google.com/deployment-manager/docs/). The idea is to introduce another way to create infrastructure code in GCP and let developers to compare Terraform and GCP Deployment Manager and make their own decision which tool to use in their future projects.
+This demonstration is basically the same as [gcp-intro-dm-demo](https://github.com/tieto-pc/gcp-intro-dm-demo) (TODO: WILL BE IMPLEMENTED LATER) with one difference: gcp-intro-demo uses [Terraform](https://www.terraform.io/) as IaC tool, and gcp-intro-dm-demo uses [GCP Deployment Manager](https://cloud.google.com/deployment-manager/docs/). The idea is to introduce another way to create infrastructure code in GCP and let developers to compare Terraform and GCP Deployment Manager and make their own decision which tool to use in their future projects.
 
 This project demonstrates basic aspects how to create cloud infrastructure as code. The actual infra is very simple: just one virtual machine instance. We create a virtual private cloud [vpc](https://cloud.google.com/vpc/) and an application subnet into which we create a [VM](https://cloud.google.com/compute/docs/instances/). There is also one [firewall](https://cloud.google.com/vpc/docs/firewalls) in the VPC that allows inbound traffic only using ssh port 22. The IaC also creates a ssh key pair - the public key gets stored in your workstation, the private key will be installed to the VM.
 
@@ -204,7 +204,7 @@ Let's finally give detailed demonstration manuscript how you are able to deploy 
     2.  ssh -i terraform/modules/vm/.ssh/vm_id_rsa user@IP-NUMBER-HERE
 10. Finally destroy the infra using ```terraform destroy``` command. Check manually also using Portal that terraform destroyed all resources. **NOTE**: It is utterly important that you always destroy your infrastructure when you don't need it anymore - otherwise the infra will generate costs to you or to your unit.
 
-The official demo is over. Next you could do the equivalent [gcp-intro-dp-demo](https://github.com/tieto-pc/gcp-intro-dp-demo) that uses GCP Deployment Manager. Then compare the Terraform and Deployment Manager code and also the workflows. Evaluate the two tools - which pros and cons they have when compared to each other? Which one would you like to start using? And why?
+The official demo is over. Next you could do the equivalent [gcp-intro-dm-demo](https://github.com/tieto-pc/gcp-intro-dm-demo) that uses GCP Deployment Manager. Then compare the Terraform and Deployment Manager code and also the workflows. Evaluate the two tools - which pros and cons they have when compared to each other? Which one would you like to start using? And why?
 
 
 # Suggestions How to Continue this Demonstration

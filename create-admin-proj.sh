@@ -14,7 +14,7 @@ gcloud projects create $TF_VAR_ADMIN_PROJ_ID --folder=$TF_VAR_FOLDER_ID --name=$
 
 # Create gcloud configuration for terraform parent project.
 echo "*** Creating gcloud configuration... ***"
-gcloud config configurations create $TF_VAR_CONFIG_NAME
+gcloud config configurations create $TF_VAR_ADMIN_PROJ_ID
 gcloud config set compute/region $TF_VAR_REGION
 gcloud config set compute/zone $TF_VAR_ZONE
 gcloud config set account $TF_VAR_ACCOUNT

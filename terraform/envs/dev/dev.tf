@@ -26,7 +26,7 @@ terraform {
     # NOTE: Change here the bucket name that you use to store Terraform backend.
     # NOTE: Variables not allowed here, therefore check it: echo $TF_VAR_TERRA_BACKEND_BUCKET_NAME
     # NOTE ***********************************************************************************************
-    bucket           =  "marttkar-terraform-5"
+    bucket           =  "marttkar-terraform-6"
     prefix           = "gcp-intro-demo/dev/terraform.tfstate"
   }
 }
