@@ -56,7 +56,7 @@ NOTE: This is just one possible solution. This solution allows the infra project
 
 First create environment variables file in ~/.gcp/<YOUR-ADMIN-FILE>.sh. Use file [gcp_env_template.sh](gcp_env_template.sh) as a template.
 
-Then create admin entities.
+Then source the environment variables file and create admin entities:
 
 ```bash
 # Source environment variables.
@@ -145,7 +145,7 @@ The [vpc](https://cloud.google.com/vpc/) definition creates the VPC (virtual pri
 
 Note that in GCP VPC is a global entity and you don't assign an address space ([cidr](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)) to it as in AWS and Azure. You assign the address space to subnet. You also need to provide the infra project id which is used to host subnet and firewall rule (and later compute instance).
 
-Finally there is a [firewall rule](https://cloud.google.com/vpc/docs/firewalls) defintion which opens port 22 for ssh connections. NOTE: We do not restrict any source addresses - in real world system you should restrict the source ip addresses, of course. But don't worry - there is just one VM and we protect the VM with ssh keys (see VM chapter later).
+Finally there is a [firewall rule](https://cloud.google.com/vpc/docs/firewalls) definition which opens port 22 for ssh connections. NOTE: We do not restrict any source addresses - in real world system you should restrict the source ip addresses, of course. But don't worry - there is just one VM and we protect the VM with ssh keys (see VM chapter later).
 
 
 ## VM Module
